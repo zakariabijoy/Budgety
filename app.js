@@ -25,6 +25,35 @@ var budgetController = (function () {
         }
     }
 
+    return {
+        addItem: function(type, des, val) {
+            var newItem, Id;
+            
+            // create new id  ( id = last id +1)
+            if(data.allItems[type].length > 0){
+                Id = data.allItems[type][data.allItems[type].length - 1].id + 1;
+            }else{
+                Id = 0;
+            }
+            
+            // create new item based on 'exp' or 'inc' type
+            if(type === 'exp'){
+                newItem = new Expense(Id, des, val)
+            }else if(type === 'inc'){
+                newItem = new Income(Id, des, val)
+            }
+
+            // push it to out data structure 
+            data.allItems[type].push(newItem);
+
+            //return  the new element
+            return newItem;
+        },
+        testing : function () {
+            console.log(data);
+        }
+    };
+
 
 
 })();
@@ -72,13 +101,12 @@ var controller = (function (budgetCntrl, UICntrl) {
     
 
     var ctrlAddItem  = function(){
-
+        var input, newItem
         // 1. Get the filed input data
-        var input = UICntrl.getInput();
-        console.log(input);
+        input = UICntrl.getInput();
 
         // 2. add the item to the budget controller
-
+        newItem = budgetCntrl.addItem(input.type, input.description, input.value);
         // 3. add the item to the ui
 
         // 4. calculate the budget 
