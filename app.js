@@ -61,6 +61,22 @@ var budgetController = (function () {
             return newItem;
         },
 
+        deleteItem: function (type,id) {
+            
+            var ids, index;
+
+            ids =data.allItems[type].map(function(current) {
+               return current.id; 
+            });
+
+            index = ids.indexOf(id);
+
+            if(index !== -1){
+                data.allItems[type].splice(index, 1);
+            }
+            
+        },
+
         calculateBudget: function () {
             
             // calculate total inccome  and expenses
@@ -241,11 +257,12 @@ var controller = (function (budgetCntrl, UICntrl) {
       
       if(itemId){
 
-        splitId = itemId.splitId('-');
+        splitId = itemId.split('-');
         type = splitId[0];
-        id = splitId[1];
+        id = parseInt(splitId[1]);
 
         // 1. delete the item from data structure 
+        budgetCntrl.deleteItem(type, id);
 
         // 2. delete the item from ui
 
